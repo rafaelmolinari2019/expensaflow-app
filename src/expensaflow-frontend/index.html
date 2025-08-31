@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ExpensaFlow – Gestão de Despesas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-receipt me-2"></i>ExpensaFlow
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto"></ul>
+                <div id="auth-nav" class="d-flex">
+                    <button class="btn btn-outline-primary me-2" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#registerModal">Cadastrar</button>
+                </div>
+                <div id="user-nav" class="d-none align-items-center">
+                    <span id="welcome-message" class="navbar-text me-3"></span>
+                    <button id="logout-button" class="btn btn-outline-danger">Sair</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <main class="container my-5">
+
+        <div id="user-dashboard" class="d-none">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="feature-icon"><i class="fas fa-clock"></i></div>
+                        <h5>Despesas Pendentes</h5>
+                        <div id="user-pending-count" class="dashboard-number">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="feature-icon"><i class="fas fa-check-circle"></i></div>
+                        <h5>Despesas Aprovadas</h5>
+                        <div id="user-approved-count" class="dashboard-number">0</div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card dashboard-card">
+                        <div class="feature-icon"><i class="fas fa-money-bill-wave"></i></div>
+                        <h5>Total Aprovado</h5>
+                        <div id="user-total-amount" class="dashboard-number">R$ 0,00</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-header bg-white"><h5 class="mb-0">Minhas Despesas</h5></div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Data</th>
+                                            <th>Valor</th>
+                                            <th>Status</th>
+                                            <th class="text-center">Ações</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="user-expenses-tbody"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-white"><h5 class="mb-0">Adicionar Nova Despesa</h5></div>
+                        <div class="card-body">
+                            <form id="expenseForm">
+                                <div class="mb-3"><label for="description" class="form-label">Descrição</label><input type="text" name="description" class="form-control" id="description" required></div>
+                                <div class="mb-3"><label for="category" class="form-label">Categoria</label><select class="form-select" name="category" id="category" required><option value="transport">Transporte</option><option value="meals">Alimentação</option><option value="supplies">Materiais</option><option value="lodging">Hospedagem</option><option value="other">Outros</option></select></div>
+                                <div class="mb-3"><label for="amount" class="form-label">Valor (R$)</label><input type="number" name="amount" class="form-control" id="amount" step="0.01" required></div>
+                                <div class="mb-3"><label for="date" class="form-label">Data</label><input type="date" name="date" class="form-control" id="date" required></div>
+                                <div class="mb-3"><label for="receipt" class="form-label">Comprovante</label><input type="file" name="receipt" class="form-control" id="receipt"></div>
+                                <button type="submit" class="btn btn-primary w-100"><i class="fas fa-paper-plane me-1"></i> Enviar Despesa</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="admin-dashboard" class="d-none">
+            <h2 class="mb-4">Painel do Gestor</h2>
+            <div class="card">
+                <div class="card-header bg-white"><h5 class="mb-0">Solicitações de Despesas Pendentes</h5></div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Colaborador</th>
+                                    <th>Descrição</th>
+                                    <th>Data</th>
+                                    <th>Valor</th>
+                                    <th>Comprovante</th>
+                                    <th class="text-center">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-expenses-tbody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <div id="marketing-section">
+        <div class="hero-section"><div class="container text-center"><h1 class="display-4 fw-bold mb-4">Simplifique a gestão de despesas da sua equipe</h1><p class="lead mb-4">Registro, aprovação e reembolso em um único lugar. Faça login ou cadastre-se para começar.</p></div></div>
+    </div>
+    
+    <div class="modal fade" id="loginModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Login</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="loginForm"><div class="mb-3"><label for="loginEmail" class="form-label">Email</label><input type="email" class="form-control" id="loginEmail" required></div><div class="mb-3"><label for="loginPassword" class="form-label">Senha</label><input type="password" class="form-control" id="loginPassword" required></div><button type="submit" id="loginButton" class="btn btn-primary w-100">Entrar</button></form></div></div></div></div>
+    <div class="modal fade" id="registerModal" tabindex="-1"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h5 class="modal-title">Cadastrar</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="registerForm"><div class="mb-3"><label for="registerName" class="form-label">Nome Completo</label><input type="text" class="form-control" id="registerName" required></div><div class="mb-3"><label for="registerCompany" class="form-label">Empresa</label><input type="text" class="form-control" id="registerCompany" required></div><div class="mb-3"><label for="registerEmail" class="form-label">Email</label><input type="email" class="form-control" id="registerEmail" required></div><div class="mb-3"><label for="registerPassword" class="form-label">Senha</label><input type="password" class="form-control" id="registerPassword" required></div><button type="submit" class="btn btn-primary w-100">Criar Conta</button></form></div></div></div></div>
+    
+    <footer class="bg-light py-4 mt-auto"><div class="container text-center"><p class="mb-0">&copy; 2025 ExpensaFlow. Todos os direitos reservados.</p></div></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
