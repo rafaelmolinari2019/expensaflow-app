@@ -1,33 +1,19 @@
 # Estágio 1: Build da aplicação React
-# Usamos uma imagem Node para ter acesso ao npm
 FROM node:18-alpine AS builder
 
-# Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copia o package.json e package-lock.json para o contêiner
-# Fazemos isso primeiro para aproveitar o cache do Docker
-COPY package*.json ./
+# Copia os arquivos de manifesto de dependências
+COPY package.json ./
+COPY package-lock.json ./
 
-# Instala as dependências do projeto
-RUN npm install
+# Instala as dependências usando 'npm ci' para builds mais rápidos e confiáveis
+RUN npm ci
 
 # Copia o resto do código da aplicação
 COPY . .
 
-# Roda o script de build para gerar os arquivos estáticos otimizados
+# Roda o script de build
 RUN npm run build
 
-# Estágio 2: Servir os arquivos estáticos com Nginx
-# Usamos uma imagem Nginx super leve para servir o conteúdo
-FROM nginx:stable-alpine
-
-# Copia os arquivos gerados no estágio de build (da pasta /app/build)
-# para a pasta padrão do Nginx que serve conteúdo HTML
-COPY --from=builder /app/build /usr/share/nginx/html
-
-# Expõe a porta 80, que é a porta padrão do Nginx
-EXPOSE 80
-
-# Comando para iniciar o Nginx quando o contêiner rodar
-CMD ["nginx", "-g", "daemon off;"]
+# ... (o resto do arquivo continua igual)
